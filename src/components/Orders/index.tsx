@@ -12,7 +12,7 @@ export function Orders() {
   const [orders, setOrders] = useState<OrderProps[]>([]);
 
   useEffect(() => {
-    const socket = sockerIo('http://127.0.0.1:4000', {
+    const socket = sockerIo(import.meta.env.BASE_API, {
       transports: ['websocket']
     });
 

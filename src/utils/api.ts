@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: process.env.BASE_API
+  baseURL: import.meta.env.BASE_API
 });
