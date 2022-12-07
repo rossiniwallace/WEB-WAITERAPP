@@ -15,7 +15,7 @@ export function Orders() {
 
   useEffect(() => {
     console.log(baseURL)
-    const socket = sockerIo(baseURL, {
+    const socket = sockerIo('http://127.0.0.1:4000', {
       transports: ['websocket']
     });
 
