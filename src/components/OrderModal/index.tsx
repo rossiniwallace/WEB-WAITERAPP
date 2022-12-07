@@ -67,7 +67,7 @@ export function OrderModal({ visible, order ,onClose, onCancelOrder, isLoading, 
                 <img
                   height='28.51'
                   width='56'
-                  src={`${import.meta.env.BASE_API}/uploads/${product.imagePath}`}
+                  src={`${import.meta.env.VITE_BASE_API}/uploads/${product.imagePath}`}
                   alt={product.name} />
 
                 <span className="quantity">{quantity}x</span>

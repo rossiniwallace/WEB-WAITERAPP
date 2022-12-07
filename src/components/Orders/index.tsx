@@ -7,12 +7,15 @@ import sockerIo from 'socket.io-client';
 import { api } from '../../utils/api';
 
 
+const baseURL = String(import.meta.env.VITE_BASE_API)
+
 export function Orders() {
 
   const [orders, setOrders] = useState<OrderProps[]>([]);
 
   useEffect(() => {
-    const socket = sockerIo(import.meta.env.BASE_API, {
+    console.log(baseURL)
+    const socket = sockerIo(baseURL, {
       transports: ['websocket']
     });
 
