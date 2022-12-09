@@ -2,27 +2,29 @@ import { useEffect, useState } from 'react';
 import { OrderProps } from '../../types/Order';
 import { OrderBoard } from '../OrderBoard';
 import { Container } from './styles';
+import { toast } from 'react-toastify';
 
-import sockerIo from 'socket.io-client';
+import  io  from 'socket.io-client';
 import { api } from '../../utils/api';
 
-
-const baseURL = String(import.meta.env.VITE_BASE_API)
+const socket = io('http://127.0.0.1:4000', {
+  transports: ['websocket'],
+});
 
 export function Orders() {
 
   const [orders, setOrders] = useState<OrderProps[]>([]);
 
   useEffect(() => {
-    console.log(baseURL)
-    const socket = sockerIo('http://127.0.0.1:4000', {
-      transports: ['websocket']
+    socket.on('orders@new',(newOrder)=> {
+      setOrders((prevState) => prevState.concat(newOrder));
+      toast.info(
+        `Um novo pedido para a mesa ${newOrder.table}!`
+      );
     });
-
-    socket.on('orders@new', (order) => {
-      setOrders((prevState) => prevState.concat(order));
-      console.log('Novo pedido cadastrado', order);
-    });
+    return  function cleanup(){
+      socket.removeListener('orders@new');
+    };
   }, []);
 
   useEffect(() => {
@@ -30,6 +32,8 @@ export function Orders() {
       setOrders(data);
     });
   }, []);
+
+
 
   const waiting = orders.filter((order) => order.status === 'WAITING');
   const inProduction = orders.filter((order) => order.status === 'IN_PRODUCTION');
