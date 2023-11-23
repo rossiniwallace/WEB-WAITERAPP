@@ -1,8 +1,8 @@
-import { Actions, ModalBody, OrderDetails, Overlay } from './styles';
+import {Actions, ModalBody, OrderDetails, Overlay} from './styles';
 import closeIcon from '../../assets/images/close-icon.svg';
-import { OrderProps } from '../../types/Order';
-import { formatCurrency } from '../../utils/formatCurrency';
-import { useEffect } from 'react';
+import {OrderProps} from '../../types/Order';
+import {formatCurrency} from '../../utils/formatCurrency';
+import {useEffect} from 'react';
 
 interface OrderModelProps {
   visible: boolean;
@@ -13,33 +13,34 @@ interface OrderModelProps {
   onChangeOrderStatus: () => void;
 }
 
-export function OrderModal({ visible, order ,onClose, onCancelOrder, isLoading, onChangeOrderStatus}: OrderModelProps) {
+export function OrderModal({visible, order, onClose, onCancelOrder, isLoading, onChangeOrderStatus}: OrderModelProps) {
 
   useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent){
-      if(event.key==='Escape'){
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
         onClose();
       }
     }
-    document.addEventListener('keydown',handleKeyDown);
+
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
-      document.removeEventListener('keydown',handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown);
     };
-  },[onClose]);
+  }, [onClose]);
 
   if (!visible || !order) return null;
 
-  const total = order.products.reduce((total, {product, quantity })=> {
-    return total +  (product.price * quantity);
-  },0);
+  const total = order.products.reduce((total, {product, quantity}) => {
+    return total + (product.price * quantity);
+  }, 0);
 
   return (
     <Overlay>
       <ModalBody>
         <header>
           <strong> Mesa {order.table}</strong>
-          <button type='button' onClick={onClose}>
-            <img src={closeIcon} alt='Fechar' />
+          <button type="button" onClick={onClose}>
+            <img src={closeIcon} alt="Fechar"/>
           </button>
         </header>
 
@@ -62,13 +63,13 @@ export function OrderModal({ visible, order ,onClose, onCancelOrder, isLoading, 
         <OrderDetails>
           <strong>Itens</strong>
           <div className="order-items">
-            {order.products.map(({_id, product, quantity}) => (
-              <div className="item" key={_id}>
+            {order.products.map(({id, product, quantity}) => (
+              <div className="item" key={id}>
                 <img
-                  height='28.51'
-                  width='56'
-                  src={`http://127.0.0.1:4000/uploads/${product.imagePath}`}
-                  alt={product.name} />
+                  height="28.51"
+                  width="56"
+                  src={`${import.meta.env.VITE_API_URL}/uploads/${product.imagePath}`}
+                  alt={product.name}/>
 
                 <span className="quantity">{quantity}x</span>
 
@@ -88,8 +89,8 @@ export function OrderModal({ visible, order ,onClose, onCancelOrder, isLoading, 
         <Actions>
           {order.status !== 'DONE' && (
             <button
-              type='button'
-              className='primary'
+              type="button"
+              className="primary"
               disabled={isLoading}
               onClick={onChangeOrderStatus}
             >
@@ -104,7 +105,7 @@ export function OrderModal({ visible, order ,onClose, onCancelOrder, isLoading, 
             </button>
 
           )}
-          <button type='button' className='secondary' onClick={onCancelOrder} disabled={isLoading}>
+          <button type="button" className="secondary" onClick={onCancelOrder} disabled={isLoading}>
             <span>Cancelar Pedido</span>
           </button>
         </Actions>

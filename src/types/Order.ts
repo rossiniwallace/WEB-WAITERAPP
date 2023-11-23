@@ -1,9 +1,9 @@
 export interface OrderProps {
-  _id: string;
+  id: string;
   table: string;
   status: 'WAITING'| 'IN_PRODUCTION' | 'DONE';
   products: {
-    _id: string;
+    id: string;
     quantity: number;
     product: {
       name: string;
